@@ -137,7 +137,7 @@ celerybeat.pid
 # Environments
 .env
 tmdb_data.csv
-rawg_data.csv
+games_data.csv
 watchlist.db
 .envrc
 .venv
