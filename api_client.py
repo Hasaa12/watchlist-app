@@ -3,7 +3,7 @@ import pandas as pd
 from db_manager import get_connection
 
 BASE_DIR = Path(__file__).resolve().parent
-TMDB_CANDIDATES = ["tmdb_data.csv", "tmdb_movies_tv.csv", "tmdb_movies_tv.csv.csv"]
+TMDB_CANDIDATES = ["tmdb_movies_tv.csv", "tmdb_movies_tv.csv", "tmdb_movies_tv.csv.csv"]
 GAME_CANDIDATES = ["games_data.csv"]
 
 

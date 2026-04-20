@@ -139,7 +139,7 @@ celerybeat.pid
 tmdb_movies_tv.csv
 games_data.csv
 watchlist.db
-tmdb_data.csv
+tmdb_movies_tv.csv
 .envrc
 .venv
 env/
