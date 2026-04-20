@@ -4,7 +4,7 @@ from user import User
 from watchlist_manager import WatchlistManager
 from stats_service import run_all_stats
 from recommendation_engine import get_recommendations, load_csv_data
-#from favorites_manager import FavoritesManager
+from favorites_manager import FavoritesManager
 
 def main():
     print("\n" + "=" * 50)
@@ -13,6 +13,7 @@ def main():
 
     #--- INITIALIZATION ---
     #Boot up all the managers
+    favorites_manager = FavoritesManager()
     ratings_manager = RatingsManager()
     watchlist_manager = WatchlistManager()
 
@@ -224,37 +225,63 @@ def main():
                         print("\nReturning to Main Menu...")
                         break
 
-            elif choice == 4:
-                print("\n--- ❤️FAVORITES ---")
+                    elif choice == 4:
+                        print("\n--- ❤️ FAVORITES ---")
                 while True:
                     print_menu("FAVORITES", [
                         "View My Favorites",
                         "Add an Item to Favorites",
                         "Remove an Item from Favorites",
+                        "Search Favorites",
                         "Back to Main Menu"
                     ])
-                    fav_choice = get_user_choice(max_option=4)
+                    fav_choice = get_user_choice(max_option=5)
 
                     if fav_choice == 1:
                         print("\n--- My Favorites ---")
-                        # TODO: Call code
-                        # e.g., favorites_manager.get_user_favorites(logged_in_user.user_id)
-                        print("[Integration Pending: Team's favorites list goes here]")
+                        favorites = favorites_manager.get_all_favorites(logged_in.user_id)
+
+                        if not favorites:
+                            print("You have no favorite items yet.")
+                        else:
+                            for row in favorites:
+                                print(
+                                    f"ID: {row[0]} | Title: {row[1]} | Type: {row[2]} | "
+                                    f"Genre: {row[3]} | Year: {row[8]} | Added: {row[13]}"
+                                )
 
                     elif fav_choice == 2:
                         print("\n--- Add to Favorites ---")
-                        item_id = input("Enter the ID of the item to favorite: ")
-                        # TODO: Call code
-                        # e.g., favorites_manager.add_favorite(logged_in_user.user_id, item_id)
-                        print(f"[Integration Pending: Add ID {item_id} to favorites]")
+                        try:
+                            item_id = int(input("Enter the ID of the item to favorite: "))
+                            favorites_manager.add_favorite(logged_in.user_id, item_id)
+                        except ValueError:
+                            print("Item ID must be a number.")
 
                     elif fav_choice == 3:
                         print("\n--- Remove from Favorites ---")
-                        item_id = input("Enter the ID of the item to remove: ")
-                        # TODO: Call code
-                        print(f"[Integration Pending: Remove ID {item_id} from favorites]")
+                        try:
+                            item_id = int(input("Enter the ID of the item to remove: "))
+                            if confirm_action("Are you sure you want to remove this favorite?"):
+                                favorites_manager.remove_favorite(logged_in.user_id, item_id)
+                        except ValueError:
+                            print("Item ID must be a number.")
 
                     elif fav_choice == 4:
+                        print("\n--- Search Favorites ---")
+                        keyword = input("Enter a keyword to search: ").strip()
+                        results = favorites_manager.search_favorites(logged_in.user_id, keyword)
+
+                        if not results:
+                            print("No matching favorites found.")
+                        else:
+                            for row in results:
+                                print(
+                                    f"ID: {row[0]} | Title: {row[1]} | Type: {row[2]} | "
+                                    f"Genre: {row[3]} | Year: {row[8]} | Added: {row[13]}"
+                                )
+
+                    elif fav_choice == 5:
                         print("\nReturning to Main Menu...")
                         break
 
